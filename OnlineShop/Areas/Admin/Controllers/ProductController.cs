@@ -112,6 +112,8 @@ namespace OnlineShop.Areas.Admin.Controllers
         //GET Details Action Method
         public ActionResult Details(int? id)
         {
+            ViewData["productTypeId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
+            ViewData["TagId"] = new SelectList(_db.SpecialTags.ToList(), "Id", "Name");
 
             if (id == null)
             {
