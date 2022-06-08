@@ -32,6 +32,19 @@ namespace OnlineShop.Areas.Admin.Controllers
             return View(_db.products.Include(c => c.ProductTypes).Include(f => f.SpecialTag).ToList());
         }
 
+        //POST Index action method
+        [HttpPost]
+        public IActionResult Index(decimal? lowAmount, decimal? largeAmount)
+        {
+            var products = _db.products.Include(c => c.ProductTypes).Include(c => c.SpecialTag)
+                .Where(c => c.Price >= lowAmount && c.Price <= largeAmount).ToList();
+            if (lowAmount == null || largeAmount == null)
+            {
+                products = _db.products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList();
+            }
+            return View(products);
+        }
+
         //Get Create method
         public IActionResult Create()
         {
@@ -45,21 +58,30 @@ namespace OnlineShop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var searchProduct = _db.products.FirstOrDefault(c => c.Name == products.Name);
+                if (searchProduct != null)
+                {
+                    ViewBag.message = "This product is already exist";
+                    ViewData["productTypeId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
+                    ViewData["TagId"] = new SelectList(_db.SpecialTags.ToList(), "Id", "Name");
+                    return View(products);
+                }
+
                 if (image != null)
                 {
                     var name = Path.Combine(_he.WebRootPath + "/Images", Path.GetFileName(image.FileName));
                     await image.CopyToAsync(new FileStream(name, FileMode.Create));
-                    products.Image = "Images/" + image.FileName;
+                   products.Image = "Images/" + image.FileName;
                 }
+
                 if (image == null)
                 {
                     products.Image = "Images/noimage.PNG";
                 }
-
-
                 _db.products.Add(products);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+
             }
 
             return View(products);

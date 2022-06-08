@@ -57,7 +57,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-<tr>
+          <tr>
     <td>@item.Name</td>
     <td>@item.Price</td>
     <td>@item.ProductColor</td>
@@ -70,7 +70,6 @@
 </tr>            }
         </tbody>
 
-
     </table>
 </div>
 
@@ -79,12 +78,7 @@
 
     <script type="text/javascript">
         $(document).ready( function () {
-            $('#myTable').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'pageLength','copy', 'csv', 'excel', 'pdf', 'print'
-                ]
-            });
+            $('#myTable').DataTable();
         } );
         $(function(){
             var save = '@TempData["save"]'
