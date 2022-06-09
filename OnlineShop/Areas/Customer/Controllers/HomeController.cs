@@ -6,23 +6,24 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-
+using OnlineShop.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace OnlineShop.Controllers
 {
     [Area("Customer")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private ApplicationDbContext _db;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext db)
         {
-            _logger = logger;
+            _db = db;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(_db.products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList());
         }
 
         public IActionResult Privacy()
