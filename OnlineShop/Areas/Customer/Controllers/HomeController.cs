@@ -115,6 +115,17 @@ namespace OnlineShop.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //GET product Cart action method
+
+        public IActionResult Cart()
+        {
+            List<Products> products = HttpContext.Session.Get<List<Products>>("products");
+            if (products == null)
+            {
+                products = new List<Products>();
+            }
+            return View(products);
+        }
 
 
     }
