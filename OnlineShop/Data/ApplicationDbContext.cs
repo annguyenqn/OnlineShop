@@ -18,6 +18,8 @@ namespace OnlineShop.Data
         public DbSet<SpecialTag> SpecialTags { get; set; }
         public DbSet<Products> products { get; set; }
 
+        public DbSet<Order> orders { get; set; }
 
+        public DbSet<OderDetails> oderDetails { get; set; }
     }
 }

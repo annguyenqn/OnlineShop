@@ -10,6 +10,7 @@ using OnlineShop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using OnlineShop.Utility;
+using X.PagedList;
 
 namespace OnlineShop.Controllers
 {
@@ -23,10 +24,11 @@ namespace OnlineShop.Controllers
             _db = db;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? page)
         {
-            return View(_db.products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList());
+            return View(_db.products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList().ToPagedList(page ?? 1, 9));
         }
+
 
         public IActionResult Privacy()
         {
